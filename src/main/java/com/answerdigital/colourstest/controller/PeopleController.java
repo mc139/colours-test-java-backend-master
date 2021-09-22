@@ -22,10 +22,10 @@ public class PeopleController {
     @GetMapping
     public ResponseEntity<List<Person>> getPeople() {
         ResponseEntity.BodyBuilder responseBuilder = ResponseEntity.ok();
-        if (peopleRespository.findAll() != null) {
+        if (peopleRespository.findAll().size() != 0) {
             return responseBuilder.body(peopleRespository.findAll());
         } else {
-            return responseBuilder.body(new ArrayList<Person>());
+            return responseBuilder.body(Collections.emptyList());
         }
 
     }
@@ -33,9 +33,9 @@ public class PeopleController {
     @GetMapping("/{id}")
     public ResponseEntity<Person> getPerson(@PathVariable("id") long id) {
         if (peopleRespository.existsById(id)) {
-            return new ResponseEntity(peopleRespository.getOne(id), HttpStatus.OK);
+            return new ResponseEntity<>(peopleRespository.getOne(id), HttpStatus.OK);
         } else {
-            return new ResponseEntity(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
@@ -47,9 +47,9 @@ public class PeopleController {
             existingPerson.setColours(personUpdate.getColours());
             existingPerson.setEnabled(personUpdate.isEnabled());
             peopleRespository.save(existingPerson);
-            return new ResponseEntity(peopleRespository.getOne(id), HttpStatus.OK);
+            return new ResponseEntity<>(peopleRespository.getOne(id), HttpStatus.OK);
         } else {
-            return new ResponseEntity(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
     }
