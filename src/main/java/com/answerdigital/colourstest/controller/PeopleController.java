@@ -35,7 +35,6 @@ public class PeopleController {
         if (peopleRespository.existsById(id)) {
             return new ResponseEntity(peopleRespository.getOne(id), HttpStatus.OK);
         } else {
-            System.out.println("PERSON NOT FOUND");
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
     }
@@ -44,22 +43,18 @@ public class PeopleController {
     public ResponseEntity<Person> updatePerson(@PathVariable("id") Long id, @RequestBody PersonUpdateDTO personUpdate) {
         if (peopleRespository.existsById(id)) {
             Person existingPerson = peopleRespository.getOne(id);
-
             existingPerson.setAuthorised(personUpdate.isAuthorised());
             existingPerson.setColours(personUpdate.getColours());
             existingPerson.setEnabled(personUpdate.isEnabled());
-
             peopleRespository.save(existingPerson);
-            System.out.println("UPDATE DONE");
             return new ResponseEntity(peopleRespository.getOne(id), HttpStatus.OK);
         } else {
-            System.out.println("PERSON NOT FOUND");
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
 
     }
 
-    @PostMapping("/add")
+    @PostMapping("/create")
     public Person createPerson(@RequestBody Person person) {
         return peopleRespository.save(person);
     }
